@@ -7,7 +7,7 @@ const Admin = require("../models").Admin;
 module.exports = {
     auth: async(req,_,next)=>{
         try{
-            const header = req.headers["Authorization"];
+            const header = req.headers["authorization"];
             if(!header || typeof header !== "string"){
                 return next("unauthenticated");
             }

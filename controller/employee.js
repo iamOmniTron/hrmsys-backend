@@ -53,7 +53,7 @@ module.exports = {
             if(!employeeId || employeeId == "undefined"){
                 return next("invalid employee id");
             }
-            const employee = await Employee.findById(employeeId);
+            const employee = await Employee.findByPk(employeeId);
             if(!employee || employee == "undefined"){
                 return next("cannot get employee");
             }
@@ -67,7 +67,7 @@ module.exports = {
     },
     getEmployees: async (req,res,next)=>{
         try{
-            const employees = await Employee.find({});
+            const employees = await Employee.findAll({});
             return res.json({
                 success:true,
                 data:employees
@@ -79,7 +79,7 @@ module.exports = {
     deleteEmployee : async (req,res,next)=>{
         try{
             const {employeeId} = req.params;
-            const isDeleted = await Employee.findOneAndRemove({where:{id:employeeId}});
+            const isDeleted = await Employee.destroy({where:{id:employeeId}});
             if(!isDeleted){
                return next("cannot delete record");
             }

@@ -2,6 +2,7 @@ const express = require("express");
 const {sequelize} = require("./models");
 const Admin = require("./models").Admin;
 const Salary = require("./models").Salary;
+const Skill = require("./models").Vocation;
 const {hash} = require("bcrypt");
 const cors = require("cors");
 const app = express();
@@ -26,6 +27,13 @@ const router = require("./routes");
         {amount:200000},
         {amount:250000}
     ]);
+    await Skill.bulkCreate([
+        {name:"cyber security"},
+        {name:"human relations"},
+        {name:"game development"},
+        {name:"system repairs"},
+        {name:"web design"}
+    ])
     console.log("\Database Synchronized");
     }catch(err){
         console.log(err.message)

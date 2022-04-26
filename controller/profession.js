@@ -4,14 +4,14 @@ const Salary = require("../models").Salary
 module.exports = {
     addProfession: async (req,res,next)=>{
         try{
-            const {salaryId} = req.params;
-            if(!salaryId ||salaryId == "undefined"){
-               return next("salary id is required");
-            }
-            const {name} = req.body;
+            
+            const {name,salaryId} = req.body;
             if(!name || name == "undefined"){
                return next("profession name is required");
             }
+            if(!salaryId ||salaryId == "undefined"){
+                return next("salary id is required");
+             }
             const profession = await Profession.create({
                 name,SalaryId:salaryId
             });

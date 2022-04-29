@@ -1,5 +1,11 @@
-const {hash} = require("bcrypt");
+require("dotenv").config();
+const {hash, compare} = require("bcrypt");
 const Employee = require("../models").User;
+const fs = require("fs");
+const path = require("path");
+const Session = require("../models").Session;
+const {sign} = require("jsonwebtoken");
+const SECRET = process.env.TOKEN_SECRET;
 
 
 module.exports = {
@@ -47,6 +53,36 @@ module.exports = {
             next(err);
         }
     },
+    login:async(req,res,next)=>{
+        try{
+            const {email,password} = req.body;
+            if(!email || email == "undefined"){
+                return next("email is required");
+            }
+            if(!password || password == "undefined"){
+                return next("password is required");
+            }
+
+            const employee = await Employee.findOne({where:{email}});
+            if(!employee || employee == "undefined"){
+                return next("user doesnt exist");
+            }
+            const isPasswordMatch = await compare(password,employee.password);
+            if(!isPasswordMatch){
+                return next("invalid email/password");
+            }
+            await Session.update({timeOut:Date.now()},{where:{timeOut:null,UserId:employee.id}});
+            await Session.create({UserId:employee.id});
+            const token = sign({id:employee.id},SECRET,{expiresIn:"1d"});
+
+            return res.json({
+                success:true,
+                data:token
+            })
+        }catch(err){
+            next(err);
+        }
+    },
     getEmployee: async (req,res,next)=>{
         try{
             const {employeeId} = req.params;
@@ -76,6 +112,18 @@ module.exports = {
             next(err);
         }
     },
+    getMailAddresses: async (req,res,next)=>{
+        try{
+            const names = await Employee.findAll({attributes:["email"]});
+            return res.json({
+                success:true,
+                data:names
+            })
+        }catch(err){
+            next(err);
+        }
+    }
+    ,
     deleteEmployee : async (req,res,next)=>{
         try{
             const {employeeId} = req.params;
@@ -87,6 +135,27 @@ module.exports = {
                 success:true,
                 message:"record deleted successfully"
             })
+        }catch(err){
+            next(err);
+        }
+    },
+    getUrls : async (req,res,next)=>{
+        try{
+            const {email} = req.params;
+            if(!email || email == "undefined") return next("invalid email");
+            const payload = email.split("@")[0];
+            const dir =  path.join(__dirname +`/..`+ `/public/uploads/${payload}`);
+            fs.readdir(dir,(err,files)=>{
+                if(err){
+                    console.log(err);
+                    return next("cannot get results");
+                }
+            return res.json({
+                success:true,
+                data:files
+            })
+            })
+
         }catch(err){
             next(err);
         }

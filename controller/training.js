@@ -1,35 +1,35 @@
-const Skill = require("../models").Vocation;
+const Training = require("../models").Training;
 
 module.exports = {
-    addSkill: async (req,res,next)=>{
+    addTraining: async (req,res,next)=>{
         try{
-            const {name}= req.body;
+            const {name,duration}= req.body;
             if(!name || name == "undefined"){
                 return next("invalid name")
             }
-            const skill = await Skill.create({
-                name
+            const skill = await Training.create({
+                name,duration
             });
             if(!skill){
-                next("cannot create skill");
+                next("cannot create training");
             }
 
             return res.json({
                 success:true,
-                message:"vocation added successfully"
+                message:"training added successfully"
             })
         }catch(err){
             console.log(err);
             next(err)
         }
     },
-    editSkill: async (req,res,next)=>{
+    editTraining: async (req,res,next)=>{
         try{
-            const {skillId} = req.params;
-            if(!skillId || skillId == "undefined"){
-                return next("invalid skill id");
+            const {trainingId} = req.params;
+            if(!trainingId || trainingId == "undefined"){
+                return next("invalid training id");
             }
-            const isUpdated = await Skill.update({...req.body},{where:{id:skillId}});
+            const isUpdated = await Training.update({...req.body},{where:{id:trainingId}});
             if(!isUpdated){
                 return next("cannot update record");
             }
@@ -42,47 +42,47 @@ module.exports = {
             next(err)
         }
     },
-    getSkill: async (req,res,next)=>{
+    getTraining: async (req,res,next)=>{
         try{
-            const {skillId} = req.params;
-            if(!skillId || skillId == "undefined"){
-                return next("invalid skill id");
+            const {trainingId} = req.params;
+            if(!trainingId || trainingId == "undefined"){
+                return next("invalid training id");
             }
-            const skill = await Skill.findByPk(skillId);
-            if(!skill){
+            const training = await Training.findByPk(trainingId);
+            if(!training){
                 return next("cannot find record")
             }
             return res.json({
                 success:true,
-                data:skill
+                data:training
             })
         }catch(err){
             next(err);
         }
     },
-    getSkills: async (req,res,next)=>{
+    getTrainings: async (req,res,next)=>{
         try{
-            const skills = await Skill.findAll();
+            const trainings = await Training.findAll();
             if(!skills){
                 return next("no record found");
             }
 
             return res.json({
                 sucess:true,
-                data:skills
+                data:trainings
             })
         }catch(err){
             next(err);
         }
     },
-    deleteSkill: async (req,res,next)=>{
+    deleteTraining: async (req,res,next)=>{
         try{
-            const {skillId} = req.params;
-            if(!skillId){
-                return next("invalid skill id")
+            const {trainingId} = req.params;
+            if(!trainingId){
+                return next("invalid training id")
             }
 
-            const isDeleted = await Skill.destroy({where:{id:skillId}});
+            const isDeleted = await Training.destroy({where:{id:trainingId}});
             if(!isDeleted){
                 return next("cannot delete record")
             }

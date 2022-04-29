@@ -1,5 +1,6 @@
 const express = require("express");
 const {sequelize} = require("./models");
+const path = require("path");
 const Admin = require("./models").Admin;
 const Salary = require("./models").Salary;
 const Skill = require("./models").Vocation;
@@ -14,8 +15,8 @@ const router = require("./routes");
     await sequelize.authenticate();
     console.log("\ Connection established");
     await sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
-    await sequelize.sync({force:true}); 
-    // await sequelize.sync();
+    // await sequelize.sync({force:true}); 
+    await sequelize.sync();
     await sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
     await Admin.create({
         username:"Admin",
@@ -44,6 +45,7 @@ const router = require("./routes");
 app.use(cors({
     origin:"*"
 }));
+app.use(express.static(__dirname +"/public"));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use("/",router);

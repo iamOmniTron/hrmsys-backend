@@ -30,6 +30,7 @@ module.exports = {
             }
             req.isAdmin = false;
             req.user = user.id;
+            req.sid = payload.sid;
             return next();
 
         }catch(err){

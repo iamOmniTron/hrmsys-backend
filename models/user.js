@@ -46,6 +46,7 @@ module.exports = (sequelize,DataTypes)=>{
             onDelete:"CASCADE"
         });
         User.belongsTo(models.Profession);
+        User.hasOne(models.Payroll);
     }
     return User;
 }

@@ -5,6 +5,8 @@ const fs = require("fs");
 const path = require("path");
 const Session = require("../models").Session;
 const {sign} = require("jsonwebtoken");
+const Profession = require("../models").Profession;
+const Salary = require("../models").Salary;
 const SECRET = process.env.TOKEN_SECRET;
 
 
@@ -72,8 +74,8 @@ module.exports = {
                 return next("invalid email/password");
             }
             await Session.update({timeOut:Date.now()},{where:{timeOut:null,UserId:employee.id}});
-            await Session.create({UserId:employee.id});
-            const token = sign({id:employee.id},SECRET,{expiresIn:"1d"});
+            const sess = await Session.create({UserId:employee.id});
+            const token = sign({id:employee.id,sId:sess.id},SECRET,{expiresIn:"1d"});
 
             return res.json({
                 success:true,
@@ -156,6 +158,36 @@ module.exports = {
             })
             })
 
+        }catch(err){
+            next(err);
+        }
+    },
+    logout:async (req,res,next)=>{
+        try{
+            const {user,sid} = req;
+            if(!sid || sid == "null"){
+                return next("unauthorized");
+            }
+            const isUpdated = await Session.update({timeOut:Date.now()},{where:{UserId:userId}});
+            if(!isUpdated){
+                return next("cannont sign out");
+            }
+            return res.json({
+                success:true,
+                message:"user signed out successfully"
+            })
+        }catch(err){
+            next(err);
+        }
+    },
+    getEmployeesSalaries : async (req,res,next)=>{
+        try{
+            const salaries = await Employee.findAll({attributes:["email","id"],include:[{model:Profession,attributes:["name"],include:[{model:Salary,attributes:["amount"]}]}]});
+
+            return res.json({
+                success:true,
+                data:salaries
+            })
         }catch(err){
             next(err);
         }

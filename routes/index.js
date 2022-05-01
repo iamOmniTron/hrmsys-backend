@@ -1,25 +1,30 @@
 const {Router} = require("express");
 const {Login} = require("../controller/admin");
 const {auth,requireAdminAccess} = require("../middleware/auth");
-const {addEmployee,editEmployee,getEmployee,getEmployees,deleteEmployee,getMailAddresses,login,getUrls} = require("../controller/employee");
+const {addEmployee,editEmployee,getEmployee,getEmployees,deleteEmployee,getMailAddresses,login,getUrls,logout,getEmployeesSalaries} = require("../controller/employee");
 const {addProfession,editProfession,getProfession,getProfessions,deleteProfession} = require("../controller/profession");
 const {addSkill,editSkill,getSkill,getSkills,deleteSkill} = require("../controller/vocation");
 const {getSalaries} = require("../controller/salary");
 const {addTraining,editTraining,getTraining,getTrainings,deleteTraining} = require("../controller/training");
+const {getSessions} = require("../controller/session");
+const {joinProgram,getUserPrograms} = require("../controller/program");
+const {payEmployee} = require("../controller/payroll");
 const {upload} = require("../helpers");
 
 
 const router = Router();
 
 //EMPLOYEE ROUTE
-router.post("/employee",auth,requireAdminAccess,upload.array("pictures",5),addEmployee);
+router.post("/employee",auth,requireAdminAccess,upload.single("picture"),addEmployee);
 router.get("/employee/:employeeId",auth,requireAdminAccess,getEmployee);
 router.post("/employee/:employeeId",auth,requireAdminAccess,editEmployee);
-router.get("/employees/names",getMailAddresses);
+router.get("/employees/emails",getMailAddresses);
 router.post("/auth/employee/login",login);
+router.get("/auth/employee/logout",auth,logout);
 router.get("/auth/employee/:email",getUrls);
 router.get("/employees/all",auth,requireAdminAccess,getEmployees);
 router.delete("/employee/:employeeId",auth,requireAdminAccess,deleteEmployee);
+router.get("/employees/salary",auth,requireAdminAccess,getEmployeesSalaries);
 
 
 // AUTH ROUTE
@@ -48,5 +53,15 @@ router.get("/training/:trainingId",auth,requireAdminAccess,getTraining);
 router.get("/trainings/all",auth,requireAdminAccess,getTrainings);
 router.post("/training/:trainingId",auth,requireAdminAccess,editTraining);
 router.delete("/training/:trainingId",auth,requireAdminAccess,deleteTraining);
+
+// PROGRAM
+router.post("/program",auth,joinProgram);
+router.get("/program",auth,getUserPrograms);
+
+// SESSION
+router.get("/sessions",auth,requireAdminAccess,getSessions);
+
+// PAYROLL
+router.post("/pay/employee",auth,requireAdminAccess,payEmployee);
 
 module.exports = router;

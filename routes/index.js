@@ -6,7 +6,7 @@ const {addProfession,editProfession,getProfession,getProfessions,deleteProfessio
 const {addSkill,editSkill,getSkill,getSkills,deleteSkill} = require("../controller/vocation");
 const {getSalaries} = require("../controller/salary");
 const {addTraining,editTraining,getTraining,getTrainings,deleteTraining} = require("../controller/training");
-const {getSessions} = require("../controller/session");
+const {getSessions, getUserSessions} = require("../controller/session");
 const {joinProgram,getUserPrograms} = require("../controller/program");
 const {payEmployee} = require("../controller/payroll");
 const {upload} = require("../helpers");
@@ -60,6 +60,7 @@ router.get("/program",auth,getUserPrograms);
 
 // SESSION
 router.get("/sessions",auth,requireAdminAccess,getSessions);
+router.get("/sessions/user",auth,getUserSessions);
 
 // PAYROLL
 router.post("/pay/employee",auth,requireAdminAccess,payEmployee);

@@ -18,4 +18,15 @@ module.exports = {
             next(err);
         }
     },
+    getUserSessions : async (req,res,next)=>{
+        try{
+            const sessions = await Session.findAll({where:{UserId:req.user}});
+            return res.json({
+                success:true,
+                data:sessions
+            })
+        }catch(err){
+            next(err)
+        }
+    }
 }

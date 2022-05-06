@@ -16,7 +16,7 @@ const router = Router();
 
 //EMPLOYEE ROUTE
 router.post("/employee",auth,requireAdminAccess,upload.single("picture"),addEmployee);
-router.get("/employee/:employeeId",auth,requireAdminAccess,getEmployee);
+router.get("/employee/:employeeId",auth,getEmployee);
 router.post("/employee/:employeeId",auth,requireAdminAccess,editEmployee);
 router.get("/employees/emails",getMailAddresses);
 router.post("/auth/employee/login",login);
@@ -50,7 +50,7 @@ router.get("/salaries/all",auth,requireAdminAccess,getSalaries);
 // TRAINING
 router.post("/training",auth,requireAdminAccess,addTraining);
 router.get("/training/:trainingId",auth,requireAdminAccess,getTraining);
-router.get("/trainings/all",auth,requireAdminAccess,getTrainings);
+router.get("/trainings/all",auth,getTrainings);
 router.post("/training/:trainingId",auth,requireAdminAccess,editTraining);
 router.delete("/training/:trainingId",auth,requireAdminAccess,deleteTraining);
 

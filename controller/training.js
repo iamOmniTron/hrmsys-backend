@@ -4,7 +4,7 @@ module.exports = {
     addTraining: async (req,res,next)=>{
         try{
             const {name,duration}= req.body;
-            if(!name || name == "undefined"){
+            if(!name){
                 return next("invalid name")
             }
             const skill = await Training.create({
@@ -63,12 +63,12 @@ module.exports = {
     getTrainings: async (req,res,next)=>{
         try{
             const trainings = await Training.findAll();
-            if(!skills){
+            if(!trainings){
                 return next("no record found");
             }
 
             return res.json({
-                sucess:true,
+                success:true,
                 data:trainings
             })
         }catch(err){

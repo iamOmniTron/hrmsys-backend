@@ -8,6 +8,7 @@ const storage = multer.diskStorage({
         const {email} = req.body;
         const payload = email.split("@")[0];
         const dir = `./public/uploads/${payload}`;
+
         fs.stat(dir,(err,stats)=>{
             if(err) return cb(err,null);
             if(!stats.isDirectory()){
@@ -18,6 +19,10 @@ const storage = multer.diskStorage({
     },
     filename: (req,file,cb)=>{
         const payload = req.body.email.split("@")[0];
+        // create directory for employee
+        const appDir = path.dirname(require.main.filename);
+        let d = appDir + '/public/uploads/' + payload
+        fs.mkdir(d, { recursive: true }, (err) => { if (err) throw err; });
         cb(null,`${payload}-img-${Date.now()}.${path.extname(file.originalname)}`)
     }
 })

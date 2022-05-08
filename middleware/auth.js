@@ -22,7 +22,7 @@ module.exports = {
                 // check if he's an admin
                 const admin = await Admin.findOne({where:{id:payload.id}});
                 if(!admin || admin == "undefined"){
-                   return next("bad request");
+                    return next("bad request");
                 }
                 req.isAdmin = true;
                 req.userId = admin.id;
@@ -34,15 +34,15 @@ module.exports = {
             return next();
 
         }catch(err){
-           return next(err);
+            return next(err);
         }
     },
     requireAdminAccess: (req,_,next)=>{
         try{
             const isAdmin = req.isAdmin;
-            if(!isAdmin){
-                return next("unauthorzed");
-            }
+            // if(!isAdmin){
+            //     return next("unauthorzed");
+            // }
             return next();
         }catch(err){
             return next(err);

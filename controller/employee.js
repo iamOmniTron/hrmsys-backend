@@ -28,6 +28,7 @@ module.exports = {
             if(!user || user == "undefined"){
                return next("cannot create record");
             }
+            
             return res.json({
                 success:true,
                 message:"Employee added successfully"
@@ -73,8 +74,8 @@ module.exports = {
             if(!isPasswordMatch){
                 return next("invalid email/password");
             }
-            await Session.update({timeOut:Date.now()},{where:{timeOut:null,UserId:employee.id}});
-            const sess = await Session.create({UserId:employee.id});
+            await Session.update({timeIn:Date.now()},{where:{timeOut:null,UserId:employee.id}});
+            const sess = await Session.create({UserId:employee.id, timeIn:Date.now()});
             const token = sign({id:employee.id,sId:sess.id},SECRET,{expiresIn:"1d"});
 
             return res.json({

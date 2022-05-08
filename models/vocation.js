@@ -10,6 +10,10 @@ module.exports = (sequelize,DataTypes)=>{
             type:DataTypes.STRING,
             allowNull:false
         },
+        duration: { // vocation duration in days
+            type: DataTypes.INTEGER,
+            allowNull: false
+        }
     },{
         freezeTableName:true,
         timestamps:true

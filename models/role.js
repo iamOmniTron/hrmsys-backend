@@ -10,7 +10,18 @@ module.exports = (sequelize,DataTypes)=>{
             autoIncrement:true,
             allowNull:false,
             primaryKey:true
-        }
+        },
+
+        // salary to be paid to employees at this level
+        salary: {
+            type: DataTypes.DOUBLE,
+            allowNull: false
+        },
+        // each employee gets additional pay after given moths based on level
+        salaryIncrement: {
+            type: DataTypes.DOUBLE,
+            allowNull: false
+        },
     },{
         freezeTableName:true
     })

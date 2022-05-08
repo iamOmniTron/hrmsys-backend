@@ -3,13 +3,13 @@ module.exports = (sequelize,DataTypes)=>{
         id:{
             type:DataTypes.INTEGER,
             primaryKey:true,
-            autoIncremen:true,
+            autoIncrement:true,
             allowNull:false
         },
         timeIn: {
             type:DataTypes.DATE,
             allowNull:false,
-            defualtValue:DataTypes.NOW,
+            defaultValue:DataTypes.NOW,
         },
         timeOut:{
             type:DataTypes.DATE

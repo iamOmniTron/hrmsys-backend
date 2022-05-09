@@ -14,7 +14,7 @@ module.exports = (sequelize,DataTypes)=>{
             type:DataTypes.STRING,
             allowNull:false
         },
-        middlename:{ // new field
+        middlename:{
             type:DataTypes.STRING,
             allowNull:false
         },
@@ -27,33 +27,28 @@ module.exports = (sequelize,DataTypes)=>{
             allowNull:false,
             unique:true
         },
-        psm:{ // new field
+        psm:{ 
             type:DataTypes.STRING,
             allowNull:false,
             unique: true
         },
-        phone:{ // new field
+        phone:{ 
             type:DataTypes.STRING,
             allowNull:false,
             unique: true
         },
-        // date of appointment
-        doa:{ // new field
+        doa:{
             type:DataTypes.DATEONLY,
             allowNull:false,
         },
-        // date of retirement
-        dor:{ // new field
+        dor:{ 
             type:DataTypes.DATEONLY,
             allowNull:false,
         },
-        // status. whether user has retired, is on leave, training or active
-        // with values 4 3, 2, 1 respectively
-        // the retired status should be set on on demand. i.e when fetching employes, check employees dor and compare it with the current date. if it's equal to current date of after current date, the  then employee has retired and as such, his status should be set to 4 and stored back in the db
-        status:{ // new field
+        status:{
             type:DataTypes.INTEGER,
             allowNull:false,
-            default: 1
+            defaultValue: 1
         },
         dob:{
             type:DataTypes.DATEONLY,
@@ -63,7 +58,7 @@ module.exports = (sequelize,DataTypes)=>{
             type:DataTypes.STRING,
             allowNull:false
         },
-        gender:{ // new field
+        gender:{ 
             type:DataTypes.STRING,
             allowNull:false
         }

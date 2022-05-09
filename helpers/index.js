@@ -10,9 +10,15 @@ const storage = multer.diskStorage({
         const dir = `./public/uploads/${payload}`;
 
         fs.stat(dir,(err,stats)=>{
-            if(err) return cb(err,null);
+            if(err){
+                return fs.mkdir(dir,(err)=>{
+                    cb(err,dir);
+                });
+            } 
             if(!stats.isDirectory()){
-                return fs.mkdir(dir,(err)=>cb(err,dir));
+                return fs.mkdir(dir,(err)=>{
+                    cb(err,dir);
+                });
             }
             return cb(null,dir);
         })

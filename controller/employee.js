@@ -22,9 +22,10 @@ module.exports = {
                return next("User exists already");
             }
             const hashedPassword = await hash(password,10);
-            user = await Employee.create({
-                firstname,lastname,email,maritalStatus,dob,password:hashedPassword
-            });
+            // user = await Employee.create({
+            //     firstname,lastname,email,maritalStatus,dob,password:hashedPassword
+            // });
+            user = await Employee.create({password:hashedPassword,...req.body});
             if(!user || user == "undefined"){
                return next("cannot create record");
             }
@@ -96,6 +97,12 @@ module.exports = {
             if(!employee || employee == "undefined"){
                 return next("cannot get employee");
             }
+            if(employee.dor >= new Date(Date.now())){
+                await employee.update({
+                    status:4
+                });
+                await employee.save();
+            }
             return res.json({
                 success:true,
                 data:employee
@@ -107,6 +114,14 @@ module.exports = {
     getEmployees: async (req,res,next)=>{
         try{
             const employees = await Employee.findAll({});
+            employees.forEach(async(emp)=>{
+                if(emp.dor >= new Date(Date.now())){
+                    await emp.update({
+                        status:4
+                    });
+                    await emp.save();
+                }
+            })
             return res.json({
                 success:true,
                 data:employees

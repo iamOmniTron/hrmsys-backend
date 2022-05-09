@@ -2,7 +2,6 @@ const express = require("express");
 const {sequelize} = require("./models");
 const path = require("path");
 const Admin = require("./models").Admin;
-const Salary = require("./models").Salary;
 const Skill = require("./models").Vocation;
 const {hash} = require("bcrypt");
 const cors = require("cors");
@@ -15,19 +14,13 @@ const router = require("./routes");
     await sequelize.authenticate();
     console.log("\ Connection established");
     await sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
-    await sequelize.sync({force:true}); 
-    // await sequelize.sync();
+    // await sequelize.sync({force:true}); 
+    await sequelize.sync();
     await sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
     await Admin.create({
         username:"Admin",
         password: await hash("admin123",10)
     });
-    await Salary.bulkCreate([
-        {amount:100000},
-        {amount:150000},
-        {amount:200000},
-        {amount:250000}
-    ]);
     await Skill.bulkCreate([
         {name:"cyber security"},
         {name:"human relations"},

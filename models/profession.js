@@ -14,6 +14,10 @@ module.exports = (sequelize,DataTypes)=>{
         name:{
             type:DataTypes.STRING,
             allowNull:false,
+        },
+        salary:{
+            type:DataTypes.INTEGER,
+            allowNull:false,
         }
     },{
         freezeTableName:true,
@@ -22,7 +26,6 @@ module.exports = (sequelize,DataTypes)=>{
 
     Profession.associate = (models)=>{
         Profession.hasOne(models.User);
-        Profession.belongsTo(models.Salary);
     }
     return Profession;
 }

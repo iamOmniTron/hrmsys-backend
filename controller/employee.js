@@ -22,9 +22,6 @@ module.exports = {
                return next("User exists already");
             }
             const hashedPassword = await hash(password,10);
-            // user = await Employee.create({
-            //     firstname,lastname,email,maritalStatus,dob,password:hashedPassword
-            // });
             user = await Employee.create({password:hashedPassword,...req.body});
             if(!user || user == "undefined"){
                return next("cannot create record");
@@ -45,7 +42,12 @@ module.exports = {
             if(!employeeId || employeeId == "undefined"){
                 return next("invalid employee id");
             }
-            const isUpdated = await Employee.update({...req.body},{where:{id:employeeId}});
+            let isUpdated;
+            if("password" in req.body){
+                isUpdated = await Employee.update({...req.body},{where:{id:employeeId}});
+            }else{
+                isUpdated =await Employee.update({...req.body},{where:{id:employeeId}});
+            }
             if(!isUpdated){
                return next("cannot update employee record");
             }
@@ -93,7 +95,7 @@ module.exports = {
             if(!employeeId || employeeId == "undefined"){
                 return next("invalid employee id");
             }
-            const employee = await Employee.findByPk(employeeId);
+            const employee = await Employee.findByPk(employeeId,{include:[{model:Profession}]});
             if(!employee || employee == "undefined"){
                 return next("cannot get employee");
             }
@@ -113,7 +115,7 @@ module.exports = {
     },
     getEmployees: async (req,res,next)=>{
         try{
-            const employees = await Employee.findAll({});
+            const employees = await Employee.findAll({include:[{model:Profession}]});
             employees.forEach(async(emp)=>{
                 if(emp.dor >= new Date(Date.now())){
                     await emp.update({

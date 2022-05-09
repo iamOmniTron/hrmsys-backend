@@ -5,15 +5,15 @@ module.exports = {
     addProfession: async (req,res,next)=>{
         try{
             
-            const {name,salaryId} = req.body;
+            const {name,salary} = req.body;
             if(!name || name == "undefined"){
                return next("profession name is required");
             }
-            if(!salaryId ||salaryId == "undefined"){
-                return next("salary id is required");
+            if(!salary||salary == "undefined"){
+                return next("salary is required");
              }
             const profession = await Profession.create({
-                name,SalaryId:salaryId
+                name,salary
             });
             if(!profession){
                return next("error creating profession");
@@ -53,7 +53,7 @@ module.exports = {
                 return next("invalid profession id ")
             }
 
-            const profession = await Profession.findOne({where:{id:professionId},include:{model:Salary}});
+            const profession = await Profession.findOne({where:{id:professionId}});
             if(!profession){
                 return next("cannot find profession")
             }
@@ -68,7 +68,7 @@ module.exports = {
     },
     getProfessions: async (req,res,next)=>{
         try{
-            const professions = await Profession.findAll({include:{model:Salary}});
+            const professions = await Profession.findAll();
             return res.json({
                 success:true,
                 data:professions

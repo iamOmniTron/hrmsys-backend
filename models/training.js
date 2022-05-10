@@ -19,7 +19,7 @@ module.exports = (sequelize,DataTypes)=>{
         timestamps:true
     });
     Training.associate = (models)=>{
-        Training.hasMany(models.Program);
+        Training.hasMany(models.User);
     }
 
     return Training;

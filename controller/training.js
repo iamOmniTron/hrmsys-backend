@@ -1,5 +1,4 @@
 const Training = require("../models").Training;
-
 module.exports = {
     addTraining: async (req,res,next)=>{
         try{
@@ -62,7 +61,7 @@ module.exports = {
     },
     getTrainings: async (req,res,next)=>{
         try{
-            const trainings = await Training.findAll();
+            const trainings = await Training.fiindAll();
             if(!trainings){
                 return next("no record found");
             }

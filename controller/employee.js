@@ -3,7 +3,6 @@ const {hash, compare} = require("bcrypt");
 const Employee = require("../models").User;
 const fs = require("fs");
 const path = require("path");
-const Session = require("../models").Session;
 const {sign} = require("jsonwebtoken");
 const Profession = require("../models").Profession;
 const Salary = require("../models").Salary;
@@ -77,10 +76,7 @@ module.exports = {
             if(!isPasswordMatch){
                 return next("invalid email/password");
             }
-            await Session.update({timeIn:Date.now()},{where:{timeOut:null,UserId:employee.id}});
-            const sess = await Session.create({UserId:employee.id, timeIn:Date.now()});
-            const token = sign({id:employee.id,sId:sess.id},SECRET,{expiresIn:"1d"});
-
+            const token = sign({id:employee.id},SECRET,{expiresIn:"1d"});
             return res.json({
                 success:true,
                 data:token
@@ -180,19 +176,17 @@ module.exports = {
             next(err);
         }
     },
-    logout:async (req,res,next)=>{
+    joinTraining: async(req,res,next)=>{
         try{
-            const {user,sid} = req;
-            if(!sid || sid == "null"){
-                return next("unauthorized");
-            }
-            const isUpdated = await Session.update({timeOut:Date.now()},{where:{UserId:userId}});
+            const {trainingId} = req.params;
+            const userId = req.user;
+            const isUpdated = await Employee.update({TrainingId:trainingId,status:2},{where:{id:userId}});
             if(!isUpdated){
-                return next("cannont sign out");
+                return next("cannot join training program");
             }
             return res.json({
                 success:true,
-                message:"user signed out successfully"
+                message:"training program joined successfully"
             })
         }catch(err){
             next(err);
@@ -205,6 +199,18 @@ module.exports = {
             return res.json({
                 success:true,
                 data:salaries
+            })
+        }catch(err){
+            next(err);
+        }
+    },
+    getProfile: async (req,res,next)=>{
+        try{
+            const userId = req.user;
+            const user = await Employee.findByPk(userId,{include:[{model:"Profession"}]});
+            return res.json({
+                success:true,
+                data:user
             })
         }catch(err){
             next(err);

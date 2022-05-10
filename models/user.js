@@ -69,11 +69,9 @@ module.exports = (sequelize,DataTypes)=>{
 
     User.associate = (models)=>{
         User.belongsTo(models.Role);
-        User.hasMany(models.Session,{
-            onDelete:"CASCADE"
-        });
         User.belongsTo(models.Profession);
         User.hasOne(models.Payroll);
+        User.belongsTo(models.Training);
     }
     return User;
 }

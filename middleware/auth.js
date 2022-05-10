@@ -40,9 +40,9 @@ module.exports = {
     requireAdminAccess: (req,_,next)=>{
         try{
             const isAdmin = req.isAdmin;
-            // if(!isAdmin){
-            //     return next("unauthorzed");
-            // }
+            if(!isAdmin){
+                return next("unauthorzed");
+            }
             return next();
         }catch(err){
             return next(err);

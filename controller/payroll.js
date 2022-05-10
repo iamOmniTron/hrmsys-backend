@@ -1,6 +1,10 @@
 const PayrollDB = require("../models").Payroll;
 const User = require("../models").User;
 const Profession = require("../models").Profession;
+const Sequelize = require("../models").Sequelize;
+const {Op} = Sequelize;
+
+
 
 module.exports = {
     payEmployee: async (req,res,next)=>{
@@ -23,7 +27,8 @@ module.exports = {
     },
     getPayrolls: async(req,res,next)=>{
         try{
-            const payrolls = await PayrollDB.findAll({include:[{model:User,include:[{model:Profession}]}]});
+            const currentMonth = new Date(Date.now).getMonth();
+            const payrolls = await PayrollDB.findAll({where:{month:{[Op.lte]:currentMonth}},include:[{model:User,include:[{model:Profession}]}]});
             return res.json({
                 success:true,
                 data:payrolls

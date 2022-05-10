@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const {sign} = require("jsonwebtoken");
 const Profession = require("../models").Profession;
-const Salary = require("../models").Salary;
+const Payroll = require("../models").Payroll;
 const SECRET = process.env.TOKEN_SECRET;
 
 
@@ -25,7 +25,13 @@ module.exports = {
             if(!user || user == "undefined"){
                return next("cannot create record");
             }
-            
+            for(let i = 1; i <= 12;i ++){
+                await Payroll.create({
+                    UserId: user.id,
+                    month: 1,
+                    paid: false
+                });
+            }
             return res.json({
                 success:true,
                 message:"Employee added successfully"

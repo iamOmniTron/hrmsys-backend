@@ -14,7 +14,7 @@ const router = require("./routes");
     await sequelize.query('SET FOREIGN_KEY_CHECKS = 0')
     // await sequelize.sync({force:true}); 
     await sequelize.sync();
-    await sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+    // await sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
     await Admin.create({
         username:"Admin",
         password: await hash("admin123",10)

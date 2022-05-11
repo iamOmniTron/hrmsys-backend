@@ -18,7 +18,6 @@ module.exports = {
             const payload = verify(token,SECRET);
             //check if user is a user
             const user = await User.findOne({where:{id:payload.id}});
-            console.log(user);
             if(!user){
                 // check if he's an admin
                 const admin = await Admin.findOne({where:{id:payload.id}});

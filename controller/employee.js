@@ -31,7 +31,7 @@ module.exports = {
             for(let i = 1; i <= 12;i ++){
                 await Payroll.create({
                     UserId: user.id,
-                    month: 1,
+                    month: i,
                     paid: false
                 });
             }

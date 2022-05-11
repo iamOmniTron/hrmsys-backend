@@ -27,7 +27,7 @@ module.exports = {
     },
     getPayrolls: async(req,res,next)=>{
         try{
-            const currentMonth = new Date(Date.now).getMonth();
+            const currentMonth = new Date(Date.now()).getMonth();
             const payrolls = await PayrollDB.findAll({where:{month:{[Op.lte]:currentMonth}},include:[{model:User,include:[{model:Profession}]}]});
             return res.json({
                 success:true,

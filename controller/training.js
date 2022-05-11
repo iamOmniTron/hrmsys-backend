@@ -61,7 +61,7 @@ module.exports = {
     },
     getTrainings: async (req,res,next)=>{
         try{
-            const trainings = await Training.fiindAll();
+            const trainings = await Training.findAll();
             if(!trainings){
                 return next("no record found");
             }

@@ -1,5 +1,11 @@
 module.exports = (sequelize,DataTypes)=>{
     const Payroll = sequelize.define("Payroll",{
+        id:{
+            type:DataTypes.INTEGER,
+            allowNull:false,
+            autoIncrement:true,
+            primaryKey:true
+        },
         month:{
             type:DataTypes.INTEGER,
             allowNull:false

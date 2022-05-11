@@ -18,7 +18,7 @@ router.get("/profile",auth,getProfile);
 router.get("/employees/emails",getMailAddresses);
 router.post("/auth/employee/login",login);
 router.get("/auth/employee/:email",getUrls);
-router.post("employee/training/:trainingId",auth,joinTraining);
+router.post("/employee/training/:trainingId",auth,joinTraining);
 router.get("/employees/all",auth,requireAdminAccess,getEmployees);
 router.post("/delete/employee/:employeeId",auth,requireAdminAccess,deleteEmployee);
 router.get("/employees/salary",auth,requireAdminAccess,getPayrolls);
@@ -43,5 +43,6 @@ router.post("/delete/training/:trainingId",auth,requireAdminAccess,deleteTrainin
 
 // PAYROLL
 router.post("/pay/employee",auth,requireAdminAccess,payEmployee);
+
 
 module.exports = router;

@@ -72,6 +72,7 @@ module.exports = (sequelize,DataTypes)=>{
         User.belongsTo(models.Profession);
         User.hasOne(models.Payroll);
         User.belongsTo(models.Training);
+        // User.hasMany(models.Program);
     }
     return User;
 }

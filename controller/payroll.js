@@ -13,6 +13,8 @@ module.exports = {
             if(!userId){
                 return next("user id is required");
             }
+            const currentMonth = new Date(Date.now()).getMonth();
+            const p = await PayrollDB.find()
             const paid = await PayrollDB.create({UserId:userId,paid:true});
             if(!paid){
                 return next("cannot pay employee");

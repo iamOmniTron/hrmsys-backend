@@ -185,6 +185,7 @@ module.exports = {
             next(err);
         }
     },
+
     joinTraining: async(req,res,next)=>{
         try{
             const {trainingId} = req.params;
@@ -217,9 +218,18 @@ module.exports = {
         try{
             const userId = req.user;
             const user = await Employee.findByPk(userId,{include:[{model:Profession}]});
-            return res.json({
-                success:true,
-                data:user
+            const payload = user.email.split("@")[0];
+            const dir =  path.join(__dirname +`/..`+ `/public/uploads/${payload}`);
+            fs.readdir(dir,(err,files)=>{
+                if(err){
+                    console.log(err);
+                    return next("cannot get results");
+                }
+
+                return res.json({
+                    success:true,
+                    data: { user: user, urls: files }
+                })
             })
         }catch(err){
             next(err);

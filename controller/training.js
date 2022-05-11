@@ -62,9 +62,10 @@ module.exports = {
     getTrainings: async (req,res,next)=>{
         try{
             const trainings = await Training.findAll();
-            if(!trainings){
-                return next("no record found");
-            }
+
+            // if(!trainings){
+            //     return next("no record found");
+            // }
 
             return res.json({
                 success:true,

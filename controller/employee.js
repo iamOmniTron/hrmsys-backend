@@ -12,16 +12,19 @@ const SECRET = process.env.TOKEN_SECRET;
 module.exports = {
     addEmployee: async (req,res,next)=>{
         try{
-            const {firstname,lastname,email,dob,maritalStatus,password} = req.body;
-            if(!firstname || !lastname || !email || !dob || !maritalStatus || !password){
+            const {firstname,lastname,email,dob,maritalStatus,pass} = req.body;
+            if(!firstname || !lastname || !email || !dob || !maritalStatus || !pass){
                return next("Incomplete fields");
             }
             let user = await Employee.findOne({where:{email}});
             if(user){
                return next("User exists already");
             }
-            const hashedPassword = await hash(password,10);
-            user = await Employee.create({password:hashedPassword,...req.body});
+            const hashedPassword = await hash(pass,10);
+            console.log(hashedPassword)
+            user = await Employee.create({
+                password: hashedPassword,
+                ...req.body});
             if(!user || user == "undefined"){
                return next("cannot create record");
             }
@@ -97,7 +100,7 @@ module.exports = {
             if(!employeeId || employeeId == "undefined"){
                 return next("invalid employee id");
             }
-            const employee = await Employee.findByPk(employeeId,{include:[{model:Profession}]});
+            const employee = await Employee.findByPk(employeeId);
             if(!employee || employee == "undefined"){
                 return next("cannot get employee");
             }
@@ -117,7 +120,7 @@ module.exports = {
     },
     getEmployees: async (req,res,next)=>{
         try{
-            const employees = await Employee.findAll({include:[{model:Profession}]});
+            const employees = await Employee.findAll({include : Profession});
             employees.forEach(async(emp)=>{
                 if(emp.dor >= new Date(Date.now())){
                     await emp.update({
@@ -213,7 +216,7 @@ module.exports = {
     getProfile: async (req,res,next)=>{
         try{
             const userId = req.user;
-            const user = await Employee.findByPk(userId,{include:[{model:"Profession"}]});
+            const user = await Employee.findByPk(userId,{include:[{model:Profession}]});
             return res.json({
                 success:true,
                 data:user

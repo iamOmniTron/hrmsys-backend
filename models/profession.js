@@ -24,8 +24,8 @@ module.exports = (sequelize,DataTypes)=>{
         timestamps:true
     });
 
-    Profession.associate = (models)=>{
-        Profession.hasOne(models.User);
-    }
+    // Profession.associate = (models)=>{
+    //     Profession.hasOne(models.User);
+    // }
     return Profession;
 }

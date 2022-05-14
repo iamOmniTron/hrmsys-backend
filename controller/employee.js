@@ -23,7 +23,7 @@ module.exports = {
             const hashedPassword = await hash(pass,10);
             console.log(hashedPassword)
             user = await Employee.create({
-                password: hashedPassword,
+                password: hashedPassword,lastPromotionDate:(new Date()),
                 ...req.body});
             if(!user || user == "undefined"){
                return next("cannot create record");
@@ -61,7 +61,7 @@ module.exports = {
             }
             return res.json({
                 success:true,
-                message:"record updated successfully"    
+                message:"record updated successfully"
             })
         }catch(err){
             next(err);

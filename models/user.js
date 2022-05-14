@@ -27,21 +27,27 @@ module.exports = (sequelize,DataTypes)=>{
             allowNull:false,
             unique:true
         },
-        psm:{ 
+        psm:{
             type:DataTypes.STRING,
             allowNull:false,
             unique: true
         },
-        phone:{ 
+        phone:{
             type:DataTypes.STRING,
             allowNull:false,
             unique: true
+        },
+        lastPromotionDate:{
+            type: DataTypes.DATEONLY,
+        },
+        yearsTillPromotion:{
+            type: DataTypes.INTEGER
         },
         doa:{
             type:DataTypes.DATEONLY,
             allowNull:false,
         },
-        dor:{ 
+        dor:{
             type:DataTypes.DATEONLY,
             allowNull:false,
         },
@@ -58,7 +64,7 @@ module.exports = (sequelize,DataTypes)=>{
             type:DataTypes.STRING,
             allowNull:false
         },
-        gender:{ 
+        gender:{
             type:DataTypes.STRING,
             allowNull:false
         }
@@ -68,11 +74,9 @@ module.exports = (sequelize,DataTypes)=>{
     });
 
     User.associate = (models)=>{
-        // User.belongsTo(models.Role);
         User.belongsTo(models.Profession);
         User.hasOne(models.Payroll);
         User.belongsTo(models.Training);
-        // User.hasMany(models.Program);
     }
     return User;
 }

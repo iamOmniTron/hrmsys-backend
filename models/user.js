@@ -47,6 +47,18 @@ module.exports = (sequelize,DataTypes)=>{
             type:DataTypes.DATEONLY,
             allowNull:false,
         },
+        country:{
+          type:DataTypes.STRING,
+        },
+        hometown:{
+          type:DataTypes.STRING,
+        },
+        state:{
+          type:DataTypes.STRING,
+        },
+        contactAddress:{
+          type:DataTypes.STRING
+        },
         dor:{
             type:DataTypes.DATEONLY,
             allowNull:false,
